@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPO TER - Website QA Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfbf7; /* Warm neutral background */
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-100 hover:text-amber-800 cursor-pointer;
+        }
+        .nav-link.active {
+            @apply bg-amber-200 text-amber-900 font-semibold;
+        }
+        .page-section {
+            @apply p-4 md:p-8;
+        }
+        .stat-card {
+            @apply bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between cursor-pointer transition-transform duration-200 hover:scale-105;
+        }
+        .card-critical {
+            @apply border-t-4 border-red-500;
+        }
+        .card-ux {
+            @apply border-t-4 border-amber-500;
+        }
+        .card-content {
+            @apply border-t-4 border-blue-500;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <div class="min-h-screen flex flex-col">
+        <!-- Header & Navigation -->
+        <header class="bg-white shadow-md sticky top-0 z-10">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl font-bold text-gray-800">NPO TER QA Report</h1>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a data-page="summary" class="nav-link active">Summary</a>
+                            <a data-page="critical" class="nav-link">Critical Failures</a>
+                            <a data-page="ux" class="nav-link">UX Issues</a>
+                            <a data-page="content" class="nav-link">Content Opportunities</a>
+                            <a data-page="next-steps" class="nav-link">Next Steps</a>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden">
+                        <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-700 hover:bg-amber-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a data-page="summary" class="nav-link active block">Summary</a>
+                    <a data-page="critical" class="nav-link block">Critical Failures</a>
+                    <a data-page="ux" class="nav-link block">UX Issues</a>
+                    <a data-page="content" class="nav-link block">Content Opportunities</a>
+                    <a data-page="next-steps" class="nav-link block">Next Steps</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Page: Summary -->
+            <section id="page-summary" class="page-section">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">Phase 1 Summary: Core Functionality</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    This initial review tested the most fundamental and visible aspects of the site. The findings identify critical failures that must be addressed immediately to ensure the organization can effectively raise funds, communicate, and manage operations.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div data-page="critical" class="stat-card card-critical">
+                        <span class="text-5xl font-extrabold text-red-500">3</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mt-4">Critical Failures</h3>
+                        <p class="text-gray-600 mt-2">Urgent issues blocking core functions like donations and contact.</p>
+                    </div>
+                    <div data-page="ux" class="stat-card card-ux">
+                        <span class="text-5xl font-extrabold text-amber-500">5</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mt-4">UX & Clarity Issues</h3>
+                        <p class="text-gray-600 mt-2">Problems that lead to user frustration and distrust.</p>
+                    </div>
+                    <div data-page="content" class="stat-card card-content">
+                        <span class="text-5xl font-extrabold text-blue-500">4</span>
+                        <h3 class="text-xl font-semibold text-gray-900 mt-4">Content Opportunities</h3>
+                        <p class="text-gray-600 mt-2">Suggestions to improve engagement and conversions.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-semibold text-center mb-4">Issue Breakdown</h3>
+                    <p class="text-center text-gray-600 mb-6">This chart shows the priority of all items found. Click a segment to see the details.</p>
+                    <div class="chart-container">
+                        <canvas id="issuesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Critical Failures -->
+            <section id="page-critical" class="page-section hidden">
+                <h2 class="text-3xl font-bold mb-6 text-red-600">🚨 Critical Functionality Failures (Urgent)</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    These are the most serious issues. They prevent users from completing critical actions, directly resulting in lost donations and missed communication opportunities.
+                </p>
+                <div class="space-y-6">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden card-critical">
+                        <div class="p-6">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Fail</span>
+                            <h3 class="text-2xl font-semibold text-gray-900 mt-3">Donation Process</h3>
+                            <p class="text-gray-700 mt-2">The main button designed to take a user to the donation page is completely broken. It immediately shows an error message: **"Cannot connect to the site."**</p>
+                            <div class="mt-4 bg-red-50 p-4 rounded-lg">
+                                <strong class="text-red-900">Business Impact:</strong>
+                                <p class="text-red-800">**Direct Loss of Funds.** Users who want to donate cannot, halting a primary function of the website.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden card-critical">
+                        <div class="p-6">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Fail</span>
+                            <h3 class="text-2xl font-semibold text-gray-900 mt-3">Contact Us Page</h3>
+                            <p class="text-gray-700 mt-2">When a visitor fills out the contact form and clicks 'Submit,' the form fails and shows the same error: **"Cannot connect to the site."**</p>
+                            <div class="mt-4 bg-red-50 p-4 rounded-lg">
+                                <strong class="text-red-900">Business Impact:</strong>
+                                <p class="text-red-800">**Loss of Leads/Partners.** The organization misses inquiries from potential volunteers, partners, and media.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden card-critical">
+                        <div class="p-6">
+                            <span class="inline-block bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Fail</span>
+                            <h3 class="text-2xl font-semibold text-gray-900 mt-3">Staff Login</h3>
+                            <p class="text-gray-700 mt-2">The staff login area is unreachable and displays the error: **"Cannot connect to the site."**</p>
+                            <div class="mt-4 bg-red-50 p-4 rounded-lg">
+                                <strong class="text-red-900">Business Impact:</strong>
+                                <p class="text-red-800">**Disruption of Internal Operations.** Staff cannot access internal tools, causing management and administrative delays.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: UX Issues -->
+            <section id="page-ux" class="page-section hidden">
+                <h2 class="text-3xl font-bold mb-6 text-amber-600">✅ User Experience (UX) & Clarity Issues</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    These items relate to how easily a visitor can understand and use the website. While not completely broken, they can lead to user frustration and distrust.
+                </p>
+
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Homepage & Navigation</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-ux">
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Needs Fix</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Branding</h4>
+                        <p class="text-gray-700 mt-2">The **NPO TER logo is missing** from the homepage and overall site header.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Add the NPO TER logo prominently. The logo is essential for professionalism and brand trust.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-ux">
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Needs Fix</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Navigation</h4>
+                        <p class="text-gray-700 mt-2">Overall user navigation is not intuitive, making it hard to move around the site.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Simplify the main menu structure and ensure the most important pages are clearly visible.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 border-t-4 border-green-500">
+                        <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">OK</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">News Section</h4>
+                        <p class="text-gray-700 mt-2">The news content and display are working well.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Maintain the current quality and update cadence.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-4 text-gray-800">Forms & Translation</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-ux">
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Needs Fix</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Contact Form Input Validation</h4>
+                        <p class="text-gray-700 mt-2">The Contact Form accepts blank or improperly formatted data (e.g., a fake email address) before showing the main connection error.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Implement front-end checks to instantly warn users if they left a field blank or typed a wrong email format.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-ux">
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Needs Fix</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Newsletter Signup</h4>
+                        <p class="text-gray-700 mt-2">The signup box on the About page doesn't clearly state what to submit. **Nothing happens** after submission.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Add clear labels (e.g., "Email Address"). Display a confirmation message (e.g., "Thank you for subscribing!").</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-ux">
+                        <span class="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Needs Fix</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Translation Feature</h4>
+                        <p class="text-gray-700 mt-2">The translation widget appears to default to French or has a French tag that reads: *"Provided by Google Translate."*</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Set the intended language default and apply styling to hide or correctly format the translation provider text.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Content Opportunities -->
+            <section id="page-content" class="page-section hidden">
+                <h2 class="text-3xl font-bold mb-6 text-blue-600">💡 Content & Engagement Opportunities</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    These are suggestions to make existing, functional pages more appealing and effective, improving user conversion and time on site.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-content">
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Opportunity</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Programs Page</h4>
+                        <p class="text-gray-700 mt-2">The content is factually accurate and well-written.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Using **visual content** (photos, icons, or videos) would better showcase the impact of your programs and increase user engagement.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-content">
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Opportunity</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Gallery Page Navigation</h4>
+                        <p class="text-gray-700 mt-2">The gallery is available but difficult to browse.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Improve the user experience for viewing photos and videos (e.g., implementing smooth navigation controls and a larger display format).</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-content">
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Opportunity</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">Gallery Page Sorting</h4>
+                        <p class="text-gray-700 mt-2">The content is not easily searchable or relevant.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** **Sort the gallery** to display the **most recent activities first** so visitors see fresh updates immediately.</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6 card-content">
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase">Opportunity</span>
+                        <h4 class="text-xl font-semibold text-gray-900 mt-3">FAQ Page</h4>
+                        <p class="text-gray-700 mt-2">The content is functional but basic.</p>
+                        <p class="text-gray-600 text-sm mt-4">**Recommendation:** Expand the Q&A to cover high-value, common questions such as: **"How can I donate?"** and **"How do I volunteer?"** This helps guide motivated users.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: Next Steps -->
+            <section id="page-next-steps" class="page-section hidden">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800">📈 Next Steps: Planning for Stability & Growth</h2>
+                <p class="text-lg text-gray-700 mb-8">
+                    The critical breakdowns confirm our immediate focus must be on **fixing the donation and contact processes first**. Once the core is stable, we will proceed with the UX and content improvements.
+                    <br><br>
+                    Following these essential repairs, we will move to the advanced testing phases, which directly influence your online visibility and reputation.
+                </p>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <ul class="divide-y divide-gray-200">
+                        <li class="p-6 hover:bg-amber-50">
+                            <h4 class="text-xl font-semibold text-gray-900">1. Performance & Speed</h4>
+                            <p class="text-gray-700 mt-2">We will measure exactly how fast the pages load. This is critical for users who browse on their phones or have slower internet connections.</p>
+                            <p class="text-gray-600 text-sm mt-2"><strong>Business Impact:</strong> Reduces frustration and visitor "bounce-rate." Faster sites rank better on search engines.</p>
+                        </li>
+                        <li class="p-6 hover:bg-amber-50">
+                            <h4 class="text-xl font-semibold text-gray-900">2. Search Engine Optimization (SEO)</h4>
+                            <p class="text-gray-700 mt-2">We will check if the website is structured correctly to be easily found by Google and other search engines.</p>
+                            <p class="text-gray-600 text-sm mt-2"><strong>Business Impact:</strong> Increases free traffic (donors, volunteers, partners) who are searching for your mission.</p>
+                        </li>
+                        <li class="p-6 hover:bg-amber-50">
+                            <h4 class="text-xl font-semibold text-gray-900">3. Security</h4>
+                            <p class="text-gray-700 mt-2">We will test for vulnerabilities to ensure user data (like contact info) is safe and the site is protected from malicious attacks.</p>
+                            <p class="text-gray-600 text-sm mt-2"><strong>Business Impact:</strong> Protects your organization's reputation and ensures legal compliance (e.g., with privacy laws).</p>
+                        </li>
+                        <li class="p-6 hover:bg-amber-50">
+                            <h4 class="text-xl font-semibold text-gray-900">4. Compatibility</h4>
+                            <p class="text-gray-700 mt-2">We will test the site on different browsers (Chrome, Safari, Firefox) and devices (phones, tablets) to ensure it looks and works perfectly for everyone.</p>
+                            <p class="text-gray-600 text-sm mt-2"><strong>Business Impact:</strong> Ensures a positive experience for ALL users, regardless of their device.</p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const chartData = {
+                labels: ['Critical Failures', 'UX & Clarity Issues', 'Content Opportunities'],
+                datasets: [{
+                    label: 'Issues Found',
+                    data: [3, 5, 4],
+                    backgroundColor: [
+                        '#EF4444', // red-500
+                        '#F59E0B', // amber-500
+                        '#3B82F6'  // blue-500
+                    ],
+                    hoverBackgroundColor: [
+                        '#DC2626', // red-600
+                        '#D97706', // amber-600
+                        '#2563EB'  // blue-600
+                    ],
+                    borderColor: '#fdfbf7',
+                    borderWidth: 4,
+                    hoverOffset: 8
+                }]
+            };
+
+            const chartCtx = document.getElementById('issuesChart').getContext('2d');
+            const issuesChart = new Chart(chartCtx, {
+                type: 'doughnut',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 14,
+                                    family: 'Inter, sans-serif'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            padding: 12,
+                            titleFont: {
+                                size: 16,
+                                weight: 'bold',
+                            },
+                            bodyFont: {
+                                size: 14,
+                            }
+                        }
+                    },
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            let pageId;
+                            if (index === 0) pageId = 'critical';
+                            else if (index === 1) pageId = 'ux';
+                            else if (index === 2) pageId = 'content';
+                            
+                            if (pageId) {
+                                showPage(pageId);
+                            }
+                        }
+                    }
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const statCards = document.querySelectorAll('.stat-card');
+            const pageSections = document.querySelectorAll('.page-section');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            function showPage(pageId) {
+                pageSections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                document.getElementById(`page-${pageId}`).classList.remove('hidden');
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-page') === pageId) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // Close mobile menu on navigation
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.children[0].classList.remove('hidden'); // Show hamburger
+                mobileMenuBtn.children[1].classList.add('hidden'); // Hide X
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+
+            statCards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = card.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuBtn.children[0].classList.toggle('hidden'); // Hamburger
+                mobileMenuBtn.children[1].classList.toggle('hidden'); // X icon
+            });
+
+            // Show summary page by default
+            showPage('summary');
+        });
+    </script>
+</body>
+</html>
